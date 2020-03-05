@@ -6,6 +6,8 @@
 
 RunEscape is a infinite running game which the player character(s) have stolen an enchanted charm, a stone of magical power, a "rune" if you will. Now the vault from which they stole the charm seek to reclaim their stolen treasure. Our protagonists must use their 1337 parkouring skills to evade their pursuers. Compete with you friends to get the highest score on the board!
 
+<img src="https://github.com/cnguyen714/RunEscape/blob/master/docs/run-escape-gameplay.png">
+
 ### How to start a game
 
 Before playing, users must make an account on the website, afterwards they are directed to the lobby index. Players must create a lobby in order to play a instance of the game. Other players may also join a lobby so they can play and chat together.
