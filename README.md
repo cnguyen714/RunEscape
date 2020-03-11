@@ -240,3 +240,10 @@ Essentially, requestanimationframe will take the callback given to it (loop in t
 
 ##### More player actions
 
+## Deploy
+
+### For WSL:
+`sudo mongod --dbpath ~/data/db`
+
+To see if it is working, open another terminal and run mongo in shell with
+`mongo`
