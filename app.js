@@ -36,7 +36,7 @@ app.use("/api/lobbies", lobbies);
 
 app.use("/api/scores", scores);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 let SOCKET_LIST = {};
 // let PLAYER_LIST = {};
