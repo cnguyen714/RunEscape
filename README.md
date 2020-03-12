@@ -1,10 +1,10 @@
 # RunEscape
 
-[Link to Live](http://run-escape.herokuapp.com/#/)
+[Link to Live](https://run-escape-cdn.herokuapp.com/#/)
 
 ## Overview
 
-RunEscape is a infinite running game which the player character(s) have stolen an enchanted charm, a stone of magical power, a "rune" if you will. Now the vault from which they stole the charm seek to reclaim their stolen treasure. Our protagonists must use their 1337 parkouring skills to evade their pursuers. Compete with you friends to get the highest score on the board!
+RunEscape is a infinite running game which the player character(s) have stolen an enchanted charm, a stone of magical power, a "rune" if you will. Now the vault from which they stole the charm seek to reclaim their stolen treasure. Our protagonists must use their parkouring skills to evade their pursuers. Compete with you friends to get the highest score on the board!
 
 <img src="https://github.com/cnguyen714/RunEscape/blob/master/docs/run-escape-gameplay.png">
 
