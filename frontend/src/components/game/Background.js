@@ -1,7 +1,15 @@
 import backgroundimg from '../../assets/game/background.png';
 
-var gameState = require('./GameState');
+var GAME_STATE = require('./GameState');
 
+const DEFAULT = {
+  sX: 0,
+  sY: 0,
+  w: 800,
+  h: 500,
+  x: 0,
+  y: 0,
+}
 
 class Background {
 
@@ -20,7 +28,6 @@ class Background {
     this.background.src = backgroundimg;
   }
 
-
   draw (state) {
     // console.log(`Background Draw on ${this.ctx}`);
     this.ctx.drawImage(this.background, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
@@ -28,19 +35,20 @@ class Background {
   }
 
   update(state) {
-    if (state.dx = state.frame % 1000 === 0 && state.dx < 10 && state.current === gameState.game ? state.dx += 1 : state.dx)
-      if (state.current === gameState.game) {
-        this.x = (this.x - state.dx) % (this.w);
+    if (state.gameState === GAME_STATE.RUNNING) {
+      this.x = (this.x - state.dx) % (this.w);
     }
-
+    // if (state.dx = state.frame % 1000 === 0 && state.dx < 10 && state.gameState === GAME_STATE.RUNNING ? state.dx += 1 : state.dx)
   }
 
   reset() {
-
+    this.sX = DEFAULT.sX;
+    this.sY = DEFAULT.sY;
+    this.w = DEFAULT.w;
+    this.h = DEFAULT.h;
+    this.x = DEFAULT.x;
+    this.y = DEFAULT.y;
   }
-
-
 }
-
 
 export default Background;

@@ -1,4 +1,5 @@
-var gameState = require('./GameState');
+
+const GAME_STATE = require('./GameState');
 
 class Score {
   constructor(canvas, context){
@@ -15,16 +16,16 @@ class Score {
       this.cvs = canvas;
   }
 
-      
-
   update(state) {
-    if (state.current === state.game) {
+    if (!state.isOver) {
       this.frameTicks++;
       this.obstacleScore = state.passedObstacles * 500;
-      if (this.frameTicks % 5 === 0) {
-        // Gives player 100 points for each 100 frames
-        // console.log(`Add 100 points`);
-        this.score += 1;
+      if (state.gameState === GAME_STATE.RUNNING){
+        if (this.frameTicks % 5 === 0) {
+          // Gives player 100 points for each 100 frames
+          // console.log(`Add 100 points`);
+          this.score += 1;
+        }
       }
     }
   }
@@ -34,7 +35,7 @@ class Score {
   }
 
   draw(state) {
-    if (state.current !== gameState.getReady) {
+    if (state.gameState !== GAME_STATE.READY) {
       this.ctx.fillText("Game score: " + this.score, this.x, this.y);
       // this.ctx.drawImage(over, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h)
     }
