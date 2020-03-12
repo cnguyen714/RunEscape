@@ -3,7 +3,7 @@ import enemies from '../../assets/game/enemies.png';
 import hitsound from '../../assets/game/hit.wav';
 import pointSound from '../../assets/game/sfx_point.wav';
 
-var gameState = require('./GameState');
+const GAME_STATE = require('./GameState');
 
 class Dragon {
   constructor(canvas, context) {
@@ -35,7 +35,7 @@ class Dragon {
     this.point_sound.src = pointSound;
   }
 
-  draw() {
+  draw(state) {
     let dragon = this.animation[this.animationFrame];
 
     this.ctx.drawImage(this.sprite, dragon.sX, dragon.sY, dragon.w, dragon.h, this.x, this.y, dragon.w, dragon.h );
@@ -43,9 +43,9 @@ class Dragon {
 
   update(state, gameScore, gameOverAction) {
     let dragon = this.animation[this.animationFrame];
-    if (state.current !== gameState.game) return;
+    if (state.gameState !== GAME_STATE.RUNNING) return;
 
-    this.period = state.current === gameState.getReady ? 6 : 5;
+    this.period = state.gameState === GAME_STATE.READY ? 6 : 5;
 
     this.frameTicks++;
     if (this.frameTicks % this.period === 0) {
@@ -55,27 +55,30 @@ class Dragon {
 
     this.animationFrame = this.animationFrame % this.animation.length;
 
-    let player = state.entities.filter(entity =>
+    let player = state.players.filter(entity =>
       entity.playerId === state.localPlayerId)[0];
-    if (player.sliding) {
-      if (player.x > this.x &&
-        player.x < this.x + dragon.w &&
-        player.slidingHitBox > this.y &&
-        player.slidingHitBox < this.y + dragon.h) {
-        this.hitSfx.play();
-        gameOverAction();
-      }
-    } else {
-      if (player.x > this.x &&
-        player.x < this.x + dragon.w/2 &&
-        player.y > this.y &&
-        player.y < this.y + dragon.h) {
-        this.hitSfx.play();
-        gameOverAction();
+    if (player.alive) {
+      if (player.sliding) {
+        if (player.x > this.x &&
+          player.x < this.x + dragon.w &&
+          player.slidingHitBox > this.y &&
+          player.slidingHitBox < this.y + dragon.h) {
+          this.hitSfx.play();
+          player.alive = false;
+          gameOverAction();
+        }
+      } else {
+        if (player.x > this.x &&
+          player.x < this.x + dragon.w/2 &&
+          player.y > this.y &&
+          player.y < this.y + dragon.h) {
+          this.hitSfx.play();
+          player.alive = false;
+          gameOverAction();
+        }
       }
     }
-
-    if (player.x > (this.x + (dragon.w / 2)) && !this.passed) {
+    if (player.alive && player.x > (this.x + (dragon.w / 2)) && !this.passed) {
       this.passed = true;
       this.point_sound.play();
       gameScore.addObstacleScore(100);

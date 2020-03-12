@@ -5,8 +5,7 @@ import pointSound from '../../assets/game/sfx_point.wav';
 
 import Player from './Player';
 
-var gameState = require('./GameState');
-
+const GAME_STATE = require('./GameState');
 
 class Skeleton {
   constructor(canvas, context) {
@@ -79,9 +78,8 @@ class Skeleton {
   }
 
   update(state, gameScore, gameOver) {
-    if (state.current !== gameState.game) return;
-    let skeleton = this.animation[this.animationFrame];    
-    this.period = state.current === gameState.getReady ? 6 : 5;
+    if (state.gameState !== GAME_STATE.RUNNING) return;
+    this.period = state.gameState === GAME_STATE.READY ? 6 : 5;
     
     this.frameTicks++;
     if (this.frameTicks % this.period === 0) {
@@ -93,17 +91,19 @@ class Skeleton {
 
     // console.log(`Player ID: ${state.localPlayerId}`);
 
-    let player = state.entities.filter(entity =>
+    let player = state.players.filter(entity =>
       entity instanceof Player && entity.playerId === state.localPlayerId )[0];
-    if (player.x + 12 > this.x && 
+    if (player.alive &&
+        player.x + 12 > this.x && 
         player.x - 12 < this.x + this.w && 
         player.y + 12 > this.y && 
         player.y - 12 < this.y + this.h) {
       this.hitSfx.play();
+      player.alive = false;
       gameOver();
     }
 
-    if(player.x > (this.x + (this.w/2) ) && !this.passed ) {
+    if (player.alive && player.x > (this.x + (this.w/2) ) && !this.passed ) {
       this.passed = true;
       this.point_sound.play();
       gameScore.addObstacleScore(100);

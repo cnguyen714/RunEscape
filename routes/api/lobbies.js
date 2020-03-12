@@ -6,7 +6,7 @@ const validateCreateLobbyInput = require('../../validation/createLobby');
 router.get("/test", (req, res) => res.json({ msg: "This is the lobbies route" }));
 
 router.get('/', (req, res) => {
-  Lobby.find()
+  Lobby.find({gameMode: 0})
     .sort({ date: -1 })
     .then(lobbies => res.json(lobbies))
     .catch(err => res.status(404).json({ nolobbiesfound: "No lobbies found" }))
@@ -29,11 +29,20 @@ router.post('/create', (req, res) => {
     return res.status(400).json(errors);
   }
 
+  
+  console.log(`Request body: ${JSON.stringify(req.body)}`)
+  
   const newLobby = new Lobby({
     name: req.body.name,
-    hostPlayerId: req.body.hostPlayerId
+    hostPlayerId: req.body.hostPlayerId,
+    players: [req.body.hostPlayerId],
+    gameMode: 0,
   })
 
+  if (req.body.gameMode) {
+    newLobby.gameMode = req.body.gameMode;
+  }
+  
   newLobby
     .save()
     .then(lobby => res.json(lobby))
@@ -51,7 +60,23 @@ router.patch('/:lobbyId/join', (req, res) => {
       .then(data => {
         res.json(data)
         })
-    .catch(err => res.status(404).json({ nolobbiesfound: "No lobby found"}))
+    .catch(err => res.status(404).json({ nolobbiesfound: "No lobby found"}));
+});
+
+
+router.patch('/state/:lobbyId', (req, res) => {
+  let gameState = req.body.gameState;
+  let lobbyId = req.param.lobbyId;
+  console.log(`Update Game State: ${gameState}`);
+  Lobby.findOneAndUpdate(
+    { "_id": lobbyId },
+    { $set: { gameState: gameState} },
+    { "new": true})
+      .exec()
+      .then(data => {
+        res.json(data)
+      })
+    .catch(err => res.status(404).json({ nolobbiesfound: "No lobby found" }));
 });
 
 module.exports = router;
