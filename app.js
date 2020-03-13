@@ -35,7 +35,6 @@ require('./config/passport')(passport)
 
 app.use("/api/users", users);
 app.use("/api/lobbies", lobbies);
-
 app.use("/api/scores", scores);
 
 const port = process.env.PORT || 5000;
