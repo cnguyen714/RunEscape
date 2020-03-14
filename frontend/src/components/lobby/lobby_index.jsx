@@ -82,15 +82,16 @@ class LobbyIndex extends React.Component {
 
         <ul className="lobby-list">
           {this.props.lobbies.map(lobby => {
-              if ( lobby.gameMode === 0){
+              if ( lobby.gameMode === 0) {
                 return (
                   <li key={`lobby-${lobby._id}`} className="lobby-index-item">
                     <Link to={`lobbies/${lobby._id}`}>
                       {lobby.name}
                     </Link>
                   </li>
-                )
-              }
+                );
+              } 
+              return null;
             }
           )}
         </ul>

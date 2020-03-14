@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const express = require("express");
 const app = express();
+
+if (process.env.NODE_ENV != 'production') {
+  require('dotenv').config();
+}
+
 const db = require('./config/keys').mongoURI;
 const users = require("./routes/api/users");
 const scores = require("./routes/api/scores");
@@ -121,11 +126,7 @@ setInterval( () => {
     if(removeLobbies.length !== 0){
       Lobby.deleteMany( {id: { $in : removeLobbies }}, function(err) { console.log(`Error when deleting lobby: ${err}`)});
     }
- 
-
-
   })
 }, 43200000) // Delete lobby for every 12 hours
-
 
 const server = http.listen(port, () => console.log(`Server is running on port ${port}`));
