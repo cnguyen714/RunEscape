@@ -30,6 +30,8 @@ const KEY = {
 }
 
 const BASE_DX = 8;
+const FPS = 60;
+const NORMAL_TIME_DELTA = 1000 / FPS;
 
 class Game extends React.Component {
   constructor(props){
@@ -95,6 +97,9 @@ class Game extends React.Component {
     this.cvs = this.refs.canvas;
     this.ctx = this.cvs.getContext("2d");
     this.ctx.font = "30px Silver";
+    this.timeDelta = NORMAL_TIME_DELTA;
+    this.normalTimeDelta = NORMAL_TIME_DELTA;
+    this.prevTime = (new Date()).getTime();
 
     this.gameScore = new Score(this.cvs, this.ctx);
     this.bg = new Background(this.cvs, this.ctx);
@@ -610,10 +615,6 @@ class Game extends React.Component {
     this.bg.update(this.game);
     this.fg.update(this.game);
 
-
-
-    
-
     //logic to check player list
     // this.game.players.forEach(player => {
     //   console.log(`Player: ${player.playerId}, Is Alive: ${player.alive}`);
@@ -632,9 +633,14 @@ class Game extends React.Component {
   //loop
   loop() {
     if (this.game.gameState === GAME_STATE.DISCONNECTED) return;
-
+    let time = (new Date()).getTime();
+    this.timeDelta = time - this.prevTime;
+    
     // console.log(`Loop, frame: ${this.frame}`);
-    this.update();
+    if (this.timeDelta > NORMAL_TIME_DELTA * 0.90) {
+      this.prevTime = time;
+      this.update();
+    }
     this.draw();
     requestAnimationFrame(this.loop);
   }
